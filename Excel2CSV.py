@@ -7,7 +7,10 @@
 # Code pour convertir un répertoire de fichiers Excels
 # en fichiers CSV délimités par des ;
 
-import os, sys, fnmatch
+import fnmatch
+import os
+import sys
+
 import pandas as pd
 
 import_dir = input(u'Répertoire source :')
@@ -16,8 +19,7 @@ count_read = 0
 
 
 # Fonction pour créer un fichier CSV à partir d'un fichier Excel
-def read_excel(excel_file, export_dir):
-    sheet_to_df_map = {}
+def read_excel(excel_file, export_xls_dir):
 
     # Lecture de tous les noms de feuilles
     xls = pd.ExcelFile(excel_file)
@@ -29,10 +31,10 @@ def read_excel(excel_file, export_dir):
         # -->Possibilité ici de créer des modules de controle, modif ou autre
 
         # export en csv vers le répertoire spécifié
-        df.to_csv(export_dir + '_' + sheet_name + '.csv', sep=';', encoding='utf-8', index=False)
+        df.to_csv(export_xls_dir + '_' + sheet_name + '.csv', sep=';', encoding='utf-8', index=False)
 
 
-# Fonction pour chercher les fichier dans des repertoires et sous-repertoires
+# Fonction pour chercher les fichiers dans des repertoires et sous-repertoires
 def find_files(directory, pattern):
     for root, dirs, files in os.walk(directory):
         for basename in files:
