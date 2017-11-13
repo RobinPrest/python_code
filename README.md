@@ -1,2 +1,2 @@
 # python_code
-Python code samples
+This is juts some python codes i'm trying (and saving...)
