@@ -4,16 +4,19 @@
 # Attention, si la première ligne ne commence pas en haut à gauche,
 # seules les colonnes après sont prises en compte
 
-# Code pour convertir un répertoire de fichiers Excels
-# en fichiers CSV délimités par des ;
+# Le code find_files va trouver des fichiers correspondant à un pattern de type *.xls*
+# Le code excel2csv va convertir chaque fichier excel et ses feuilles en csv dans un répertoire cible
 
 import os
 import sys
 from utils.excel_manips import excel2csv
 from utils.file_manips import find_files
 
+# Input
 import_dir = input(u'Répertoire source :')
 export_dir = input(u'Répertoire cible (ex : X:\Data\):')
+
+# Init compteur
 count_read = 0
 
 # Lancement du process
