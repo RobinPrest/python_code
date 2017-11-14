@@ -7,7 +7,6 @@ import pandas as pd
 
 
 def find_files(directory, pattern):
-
     """
         Cherche des fichiers selon un motif avec joker dans un répertoire
         et ses sous-répertoires
@@ -54,48 +53,52 @@ def csv_first_line_export(file_csv, write_csv):
         raise
 
 
+def path_separator(input_path):
+    """
+        Extrait des morceaux d'un path
+        Un string path en entrée
+        En sortie un dictionnaire [arborescence, dossier, nom.extension,extension]
+    """
+
+    parties= {}
+
+    # Extraction de l'arborescence et création du dictionnaire
+    parties['dir']=str(os.path.dirname(input_path))
+
+    # Extraction du repertoire au-dessous
+    parties['repertoire'] = str(os.path.basename(parties['dir']))
+
+    # Extraction de nom.extension
+    parties['nom_ext'] = os.path.basename(input_path)
+
+    # Extraction de l'extension
+    list_ext = input_path.split('.')[1:]
+    parties['ext'] = ".".join(list_ext)
+
+    # Extraction du nom de fichier sans extension
+    parties['nom'] = parties['nom_ext'][:-len(parties['ext']) - 1]
+    return parties
+
+
 def excel2csv(excel_file, export_csv_dir):
     """
         Crée un ou des fichiers CSV à partir d'un fichier Excel
         Source
         Un fichier excel en entrée
-        Un répertoire en sortie
+        Un fichier csv en sortie
         :type excel_file: basestring
         :type export_csv_dir : basestring
     """
 
     # Lecture de tous les noms de feuilles
     xls = pd.ExcelFile(excel_file)
-    shn = xls.sheet_names
 
     # Boucle sur les noms de feuilles
-    for sheet_name in shn:
+    for sheet_name in xls.sheet_names:
         df = pd.read_excel(excel_file, sheet_name)
+        export_name = path_separator(excel_file)['nom']+'_'+sheet_name+'.csv'
+        print(export_name)
         # -->Possibilité ici de créer des modules de controle, modif ou autre
 
         # export en csv vers le répertoire spécifié
-        df.to_csv(export_csv_dir + '_' + sheet_name + '.csv', sep=';', encoding='utf-8', index=False)
-
-
-def path_separator(input_path):
-
-    """
-        Extrait des morceaux d'un path
-        Un string path en entrée
-        En sortie une liste [arborescence, nom.extension,extension]
-    """
-
-    # Extraction de nom.extension
-    basename_ext = os.path.basename(input_path)
-
-    # Extraction de l'arborescence
-    directory = os.path.dirname(input_path)
-
-    # Extraction de l'extension
-    list_ext = input_path.split('.')[1:]
-    extension = ".".join(list_ext)
-
-    # Export
-    list_path = [directory, basename_ext, extension]
-
-    return list_path
+        df.to_csv(export_csv_dir + '\\' + export_name, sep=';', encoding='utf-8', index=False)
