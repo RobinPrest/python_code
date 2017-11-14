@@ -20,7 +20,6 @@ def find_files(directory, pattern):
         for basename in files:
             if fnmatch.fnmatch(basename, pattern):
                 filename = os.path.join(root, basename)
-                assert isinstance(filename, object)
                 yield filename
 
 
@@ -35,16 +34,18 @@ def csv_first_line_export(file_csv, write_csv):
     """
         lit la première ligne d'un fichier csv
         Un fichier csv en entrée
-        Un fichier csv en sortie
+        Un fichier csv en sortie en mode append
         :type file_csv: basestring
         :type write_csv : basestring
     """
 
     try:
         if is_non_zero_file(file_csv):
-            # write_csv = file_csv + '.log'
+            file_name = os.path.basename(file_csv)
             df = pd.read_csv(file_csv)
-            df_header = df[:0]
+            df.drop(df.columns[0], axis=1)
+            df.insert(1, "source", file_name)
+            df_header = df[:1]
             df_header.to_csv(write_csv, sep=';', mode='a', header=True)
         else:
             print('Fichier vide : ' + file_csv)
@@ -74,3 +75,27 @@ def excel2csv(excel_file, export_csv_dir):
 
         # export en csv vers le répertoire spécifié
         df.to_csv(export_csv_dir + '_' + sheet_name + '.csv', sep=';', encoding='utf-8', index=False)
+
+
+def path_separator(input_path):
+
+    """
+        Extrait des morceaux d'un path
+        Un string path en entrée
+        En sortie une liste [arborescence, nom.extension,extension]
+    """
+
+    # Extraction de nom.extension
+    basename_ext = os.path.basename(input_path)
+
+    # Extraction de l'arborescence
+    directory = os.path.dirname(input_path)
+
+    # Extraction de l'extension
+    list_ext = input_path.split('.')[1:]
+    extension = ".".join(list_ext)
+
+    # Export
+    list_path = [directory, basename_ext, extension]
+
+    return list_path

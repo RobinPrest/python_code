@@ -2,36 +2,44 @@
 # -*- coding: UTF-8 -*-
 
 import sys
-from utils.file_manips import find_files, csv_first_line_export
+from utils.file_manips import find_files, csv_first_line_export,path_separator
 
 # Choix du répertoire
-start_dir = input(u'Répertoire à traiter :')
+start_dir = input(r'Répertoire à traiter (ex : X:\rep\:')
 # start_dir = os.getcwd()
 
-# Choix du filtre
-pattern = input(u'Extension ou filtre de fichier texte (ex : *.txt): ')
+if start_dir:
 
-# Reset du compteur de fichiers
-count = 0
+    # Choix du filtre
+    pattern = input(u'Extension ou filtre de fichier texte (ex : *.txt): ')
 
-if start_dir and pattern:
-    print('Traitement de ' + start_dir)
-    # nom du fichier d'export
-    out_log = start_dir + '\export.log'
+    # Reset du compteur de fichiers
+    count = 0
 
-    # Lancement du process
-    try:
-        for f in find_files(start_dir, pattern):
-            # print 'Found text files:', f
-            csv_first_line_export(f,out_log)
-            count = count + 1
-    except Exception as e:
-        print('Unexpected error:', sys.exc_info()[0])
-        raise
+    if pattern:
+        print('Traitement du répertoire ' + start_dir)
 
-    print(str(count) + u' fichiers lus')
-    print(u'Fichier produit : ' + start_dir + '\export.log')
+        # Lancement du process
+        try:
+            for f in find_files(start_dir, pattern):
+
+                # nom du fichier d'export
+                out_log = path_separator(f)[0] + '\export.log'
+
+                print('Found text files:', f)
+
+                csv_first_line_export(f, out_log)
+                count = count + 1
+                print(u'Fichier produit : ' + path_separator(f)[0] + '\export.log')
+
+        except Exception as e:
+            print('Unexpected error:', sys.exc_info()[0])
+            raise
+
+        print(str(count) + u' fichiers lus')
+
+    else:
+        print(u"Il manque le motif (ex : *.txt) - traitement annulé")
 
 else:
-    print(u"Il manque un argument - traitement annulé")
-
+    "Pas de fichier à traiter"
