@@ -66,7 +66,7 @@ def path_separator(input_path):
     parties['dir']=str(os.path.dirname(input_path))
 
     # Extraction du repertoire au-dessous
-    parties['repertoire'] = str(os.path.basename(parties['dir']))
+    parties['rep'] = str(os.path.basename(parties['dir']))
 
     # Extraction de nom.extension
     parties['nom_ext'] = os.path.basename(input_path)
@@ -97,8 +97,7 @@ def excel2csv(excel_file, export_csv_dir):
     # Boucle sur les noms de feuilles
     for sheet_name in xls.sheet_names:
         df = pd.read_excel(excel_file, sheet_name)
-        export_name = path_separator(excel_file)['nom']+'_'+sheet_name+'.csv'
-        print(export_name)
+        export_name = path_separator(excel_file)['rep']+'_'+path_separator(excel_file)['nom']+'_'+sheet_name+'.csv'
         # -->Possibilité ici de créer des modules de controle, modif ou autre
 
         # export en csv vers le répertoire spécifié

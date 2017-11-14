@@ -11,10 +11,7 @@ from utils.file_manips import find_files, excel2csv, path_separator
 
 # Input
 import_dir = input(u'Répertoire source :') or r'\\geosrv\Temporaire\RP'
-export_dir = input(u'Répertoire cible (ex : X:\Data\):') or r'\\geosrv\Temporaire\RP'
-
-print(import_dir)
-print(export_dir)
+export_dir = input(u'Répertoire cible :') or r'\\geosrv\Temporaire\RP'
 
 if import_dir and export_dir:
 
@@ -27,7 +24,7 @@ if import_dir and export_dir:
 
         for f in find_files(import_dir, '*.xls*'):
             try:
-                f_repertoire = path_separator(f)['repertoire']
+                f_repertoire = path_separator(f)['rep']
                 print('Traitement de '+path_separator(f)['nom_ext'])
                 excel2csv(f, export_dir)
                 print(f + ' lu')
