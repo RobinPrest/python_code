@@ -1,6 +1,8 @@
 # !/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
+import pandas as pd
+
 
 def excel2csv(excel_file, export_csv_dir):
 
@@ -10,8 +12,6 @@ def excel2csv(excel_file, export_csv_dir):
         Un fichier excel en entrée
         Un répertoire en sortie
     """
-
-    import pandas as pd
 
     # Lecture de tous les noms de feuilles
     xls = pd.ExcelFile(excel_file)
@@ -24,4 +24,3 @@ def excel2csv(excel_file, export_csv_dir):
 
         # export en csv vers le répertoire spécifié
         df.to_csv(export_csv_dir + '_' + sheet_name + '.csv', sep=';', encoding='utf-8', index=False)
-
