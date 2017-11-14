@@ -9,8 +9,8 @@
 
 import os
 import sys
-from utils.excel_manips import excel2csv
-from utils.file_manips import find_files
+
+from utils.file_manips import find_files, excel2csv
 
 # Input
 import_dir = input(u'Répertoire source :')
