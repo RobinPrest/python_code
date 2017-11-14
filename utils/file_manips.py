@@ -83,6 +83,7 @@ def path_separator(input_path):
 def excel2csv(excel_file, export_csv_dir):
     """
         Crée un ou des fichiers CSV à partir d'un fichier Excel
+        vers un répertoir donné
         Source
         Un fichier excel en entrée
         Un fichier csv en sortie
