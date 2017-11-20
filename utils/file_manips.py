@@ -58,25 +58,27 @@ def path_separator(input_path):
         Extrait des morceaux d'un path
         Un string path en entrée
         En sortie un dictionnaire [arborescence, dossier, nom.extension,extension]
+        Valeurs possibles : dir, rep, nom_ext, ext, nom
+
     """
 
-    parties= {}
-
     # Extraction de l'arborescence et création du dictionnaire
-    parties['dir']=str(os.path.dirname(input_path))
+    file_dir = str(os.path.dirname(input_path))
 
     # Extraction du repertoire au-dessous
-    parties['rep'] = str(os.path.basename(parties['dir']))
+    file_rep = str(os.path.basename(file_dir))
 
     # Extraction de nom.extension
-    parties['nom_ext'] = os.path.basename(input_path)
+    file_nom_ext = str(os.path.basename(input_path))
 
     # Extraction de l'extension
     list_ext = input_path.split('.')[1:]
-    parties['ext'] = ".".join(list_ext)
+    file_ext = ".".join(list_ext)
 
     # Extraction du nom de fichier sans extension
-    parties['nom'] = parties['nom_ext'][:-len(parties['ext']) - 1]
+    file_nom = str(file_nom_ext[:-len(file_ext) - 1])
+
+    parties = {'dir': file_dir, 'rep': file_rep, 'nom_ext': file_nom_ext, 'ext': file_ext, 'nom': file_nom}
     return parties
 
 
@@ -102,3 +104,22 @@ def excel2csv(excel_file, export_csv_dir):
 
         # export en csv vers le répertoire spécifié
         df.to_csv(export_csv_dir + '\\' + export_name, sep=';', encoding='utf-8', index=False)
+
+
+def csv2csv(csv_file, export_csv_dir):
+    """
+        Crée un ou des fichiers CSV à partir d'un fichier CSV
+        vers un répertoir donné
+        Source
+        Un fichier excel en entrée
+        Un fichier csv en sortie
+        :type csv_file: basestring
+        :type export_csv_dir : basestring
+    """
+
+    df = pd.read_csv(csv_file)
+    # -->Possibilité ici de créer des modules de controle, modif ou autre
+
+    # export en csv vers le répertoire spécifié
+    export_name = path_separator(csv_file)['rep'] + '_' + path_separator(csv_file)['nom'] + '.csv'
+    df.to_csv(export_csv_dir + '\\' + export_name, sep=';', encoding='utf-8', index=False)

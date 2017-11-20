@@ -25,7 +25,6 @@ if import_dir and export_dir:
         for f in find_files(import_dir, '*.xls*'):
             try:
                 f_repertoire = path_separator(f)['rep']
-                print('Traitement de '+path_separator(f)['nom_ext'])
                 excel2csv(f, export_dir)
                 print(f + ' lu')
                 count_read = count_read + 1
